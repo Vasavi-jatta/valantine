@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>My Forever Valentine?</title>
+    <style>
+        :root {
+            --purple-bg: #1a0a2e;
+            --light-purple: #3d1a5a;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--purple-bg) 0%, var(--light-purple) 100%);
+            color: white;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        /* Shooting Stars */
+        .star {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            height: 2px;
+            background: linear-gradient(-45deg, #ffffff, rgba(0, 0, 255, 0));
+            filter: drop-shadow(0 0 6px #ffffff);
+            animation: tail 3s ease-in-out infinite, shooting 3s ease-in-out infinite;
+        }
+
+        @keyframes tail {
+            0% { width: 0; }
+            30% { width: 100px; }
+            100% { width: 0; }
+        }
+
+        @keyframes shooting {
+            0% { transform: translateX(0) rotate(45deg); }
+            100% { transform: translateX(300px) rotate(45deg); }
+        }
+
+        .star:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .star:nth-child(2) { top: 30%; left: 60%; animation-delay: 1.2s; }
+        .star:nth-child(3) { top: 70%; left: 20%; animation-delay: 2.5s; }
+
+        /* Heart Shaped Balloons */
+        .balloon {
+            position: absolute;
+            bottom: -50px;
+            font-size: 30px;
+            animation: floatUp 6s linear infinite;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.6));
+            user-select: none;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-110vh) translateX(30px) rotate(20deg); opacity: 0; }
+        }
+
+        /* Sparkles */
+        .sparkle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 85%;
+            max-width: 350px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px #ff69b4;
+        }
+
+        .gif-container img {
+            width: 150px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            min-height: 120px;
+        }
+
+        button {
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            touch-action: manipulation;
+        }
+
+        #yesBtn {
+            background: #ff4d6d;
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 77, 109, 0.6);
+            width: 100%;
+        }
+
+        #noBtn {
+            background-color: #fff;
+            color: #333;
+            width: 80%;
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+
+    <div class="container" id="mainContainer">
+        <div class="gif-container">
+            <img id="mainGif" src="https://media.tenor.com/pdv5YIMB-hkAAAAm/cute.gif" alt="Cute Cat">
+        </div>
+        <h1 id="question">Will You Be My Forever Valentine? ✨</h1>
+        <div class="buttons">
+            <button id="yesBtn">YES! 💖</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const mainGif = document.getElementById('mainGif');
+        const question = document.getElementById('question');
+
+        // Phrases for the moving No button
+        const noPhrases = ["No", "Are you sure?","i'm gona kill u", "Really?", "Think again!", "Last chance!", "Please?", "You're mean!", "Try again!"];
+        let noIndex = 0;
+
+        // Create Sparkles
+        for (let i = 0; i < 50; i++) {
+            let sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.top = Math.random() * 100 + 'vh';
+            sparkle.style.left = Math.random() * 100 + 'vw';
+            sparkle.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(sparkle);
+        }
+
+        // Create HEART SHAPED Balloons
+        function createBalloon() {
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            balloon.innerHTML = '❤️';
+            balloon.style.left = Math.random() * 100 + 'vw';
+            balloon.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            balloon.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            document.body.appendChild(balloon);
+            setTimeout(() => balloon.remove(), 6000);
+        }
+        setInterval(createBalloon, 800);
+
+        function moveNoButton() {
+            const maxX = window.innerWidth - noBtn.offsetWidth;
+            const maxY = window.innerHeight - noBtn.offsetHeight;
+            const newX = Math.random() * maxX;
+            const newY = Math.random() * maxY;
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = newX + 'px';
+            noBtn.style.top = newY + 'px';
+            noBtn.style.zIndex = '999';
+
+            // Change text of "No" button
+            noIndex = (noIndex + 1) % noPhrases.length;
+            noBtn.innerText = noPhrases[noIndex];
+        }
+
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveNoButton();
+        });
+        noBtn.addEventListener('mouseover', moveNoButton);
+
+        // --- UPDATED MULTI-GIF & MULTI-MESSAGE LOGIC ---
+        yesBtn.addEventListener('click', () => {
+            noBtn.style.display = 'none';
+            yesBtn.style.display = 'none';
+            setInterval(createBalloon, 100);
+
+            // Array of 6 GIFs paired with 6 Messages
+            const finalData = [
+                { img: "https://media.tenor.com/hgUFPwSVtPEAAAAm/optummm.gif", text: "Yay! I knew it! love u chinnoda🥰" },
+                { img: "https://media.tenor.com/wIx44jsp4DMAAAAm/kiss.gif", text: "Sending you kisses! 😘" },
+                { img: "https://media.tenor.com/vzkveVGDzmAAAAAm/dudu-hug-bubu-dudu-kiss.gif", text: "Big hugs to my little baby! 🤗" },
+                { img: "https://media.tenor.com/dHSIL5HUotgAAAAm/hold-dudu-shake-hand.gif", text: "I'll never let you go! 🤝" },
+                { img: "https://media.tenor.com/GXol-8FjPFYAAAAm/milk-mocha-bear.gif", text: "You're the best! ✨" },
+                { img: "https://media.tenor.com/GGBl-w9rdyMAAAAM/valentine%27s-day.gif", text: "Chinnoda..! My Forever Valentine! ❤️" }
+            ];
+
+            let gifIndex = 0;
+            
+            // Set first GIF and message immediately
+            mainGif.src = finalData[gifIndex].img;
+            question.innerHTML = finalData[gifIndex].text;
+
+            const gifInterval = setInterval(() => {
+                gifIndex++;
+                if (gifIndex < finalData.length) {
+                    mainGif.src = finalData[gifIndex].img;
+                    question.innerHTML = finalData[gifIndex].text;
+                } else {
+                    clearInterval(gifInterval);
+                }
+            }, 2500); // 2.5 seconds per message
+        });
+    </script>
+</body>
+</html>
